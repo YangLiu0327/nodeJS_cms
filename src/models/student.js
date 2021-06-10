@@ -1,31 +1,34 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
+const Joi = require('joi');
 
-const schema = new mongoose.Schema(
-    {
-        firstName: {
-            type: String,
-            required: true
+
+// joi, express-validator
+// validator.js
+const schema = new Schema({
+    firstName: {
+      type: String,
+      require: true,
+      trim: true,
+      minlength: 2
+    },
+
+    lastName: {
+        type: String,
+        require: true,
+        trim: true
+      },
+
+      email: {
+        type: String,
+        require: true,
+        validate: {
+          validator: (email) => {
+            return !Joi.string().email().validate(email).error;
         },
+        msg: 'Invalid email format'
+      }
+    },
+    courses: [{ type: String, ref: 'Course' }]
+    }); 
 
-
-        lastName: {
-            type: String,
-            required: true
-        },
-
-
-        email: {
-            type: String,
-            required: true
-        },
-        courses: [{ type: String, ref: 'Course' }],
-        __v: {
-            type: Number,
-            select: false
-          }
-    }
-)
-
-const Model = mongoose.model('Student', schema);
-
-module.exports = Model;
+    module.exports = model('Student', schema);
