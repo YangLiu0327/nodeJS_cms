@@ -7,14 +7,14 @@ const Joi = require('joi');
 const schema = new Schema({
     firstName: {
       type: String,
-      require: true,
+      required: true,
       trim: true,
       minlength: 2
     },
 
     lastName: {
         type: String,
-        require: true,
+        required: true,
         trim: true
       },
 

@@ -1,7 +1,12 @@
+
 const mongoose = require('mongoose');
 
 exports.connectToDB = () => {
-  const connectionString = process.env.CONNECTION_STRING;
+  let database = process.env.DB_NAME;
+  if (process.env.NODE_ENV === 'test') {
+    database += '_test';
+  }
+  const connectionString = process.env.CONNECTION_STRING + database;
   const db = mongoose.connection;
   db.on('connected', () => {
     console.log(`DB connected with ${connectionString}`);
@@ -25,6 +30,9 @@ exports.connectToDB = () => {
   });
 };
 
+exports.disconnectDB = async () => {
+  return mongoose.disconnect();
+};
 
 
 
